@@ -69,36 +69,6 @@ Data$Buckets <- factor(
 )
 
 
-#stand alone plot 
-plot <- ggplot(data = Data, aes(x = long, y = lat, group = group,
-                            fill = Data$Buckets) ) +
-  # drop shadow: draw another map underneath, shifted and filled in grey
-  geom_polygon(aes(x = long + 0.005, y = lat - 0.002), color = "grey50", size = 0.01, fill = "grey50") +
-  geom_polygon(color = "grey10", size = 0.01) +
-  # set the projection (Mercator in this case)
-  coord_map() +
-  #set the color scale
-  scale_fill_viridis(discrete = TRUE, direction = 1) +
-  #scale_fill_brewer(palette="Greens") +
-  labs(title = "Philadelphia, 2006",
-       subtitle = "Crime Counts by Census Tract",
-       caption = "U.S. Census Bureau, 2006 Decennial Census",
-       # remove the caption from the legend
-       fill = "Crime Counts") +
-  #set the plot theme
-  theme_void() +
-  #theme_bw() +
-  theme(text = element_text(size = 8),
-        plot.title = element_text(size = 12, face = "bold"),
-        panel.background = element_rect(fill = "NA", colour = "#cccccc"),
-        plot.margin = unit(c(0.25, 0.25, 0.25, 0.25), "in"),
-        legend.text = element_text(size = 7),
-        legend.position = c(0.8, 0.25))
-
-print(plot)
-
-
-
 #create a mapped gif for all years 2006-2016
 
 saveGIF({
