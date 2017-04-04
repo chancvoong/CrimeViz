@@ -88,7 +88,7 @@ saveGIF({
       #set the color scale
       scale_fill_viridis(discrete = TRUE, direction = 1) +
       #scale_fill_brewer(palette="Greens") +
-      labs(title = "Philadelphia, 2006",
+      labs(title = "Philadelphia" year,
            subtitle = "Crime Counts by Census Tract",
            caption = "U.S. Census Bureau, 2006 Decennial Census",
            # remove the caption from the legend
