@@ -1,0 +1,51 @@
+#Chan Voong
+#PennDesign MUSA '17
+#MUSA 620 Data Wrangling with Max Galka
+#Hw#9 - Crime in Philadelphia - Animated Viz
+
+
+#Import census tracts and accidents data 
+Crime <- read.csv("/Users/Chan/Documents/Classes/Data Wrangling/MUSA-620-Week-9-master/PPD_Crime_Incidents_2006_Present_2_.csv")
+Tracts <- readShapeSpatial("/Users/Chan/Documents/Classes/Data Wrangling/MUSA-620-Week-9-master/Tract_Crime/tract_join_crime.shp")
+
+
+#change the date to only month and year 
+#strptime turns character representations into an object of class POSIXlt
+crime$Date <- strptime(x = as.character(crime$`Dispatch Date/Time`),
+                                       format = "%m/%d/%Y %H:%M")
+
+#POSIXlt (the text, character, or string 17-5-17 05:24:39)
+#POSIXct (number of seconds 1351298112 UTC which is = 
+#Sat Oct 27, 2:35 am GMT = Fri Oct 26, 8:35 pm EST = Fri Oct 26, 5:35 pm PST = 2:35 pm HST)
+
+#convert POSIXlt to POSIXct
+crime$Date <- as.POSIXct(crime$Date)
+
+#this changes a factor to a date
+#full_tweets$created_at<-as.Date(full_tweets$created_at, format="%m-%d-%Y %H:%M")
+
+#split times to hours and months
+hours <- format(as_datetime(crime$Date) ,format = "%H:%M")
+date <- format(as_datetime(crime$Date) ,format = "%m-%d-%Y")
+Month_year <- format(as_datetime(crime$Date) ,format = "%m-%Y")
+crime$hours <- hours
+crime$date <- date
+crime$Month_year <- Month_year
+
+
+#converts data from row to column 
+#Data <- mutate(Data, clean1970 = ifelse(is.na(y1970),0,y1970) )
+#Data <- mutate(Data, clean2015 = ifelse(is.na(y2015),0,y2015) )
+
+#remove the word point from the shape column
+#arcgis has an issue reading WKT points
+shape <- sub("POINT ", '', crime$Shape)
+crime$Shape <- shape
+
+#seperate lat and lng
+read.table(text=gsub('[()]', '', crime$Shape), 
+           sep=" ", col.names=c('Latitute', 'Longitude'))
+
+#export csv file
+write.csv(crime, "~/Documents/Classes/Data Wrangling/MUSA-620-Week-9-master/crime.csv")
+
